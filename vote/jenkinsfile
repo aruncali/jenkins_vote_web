@@ -1,25 +1,30 @@
-pipeline{
-    agent any 
-    stages{
-       stage('checkout'){
-          steps{
-            checkout scm
-          }
-       }
-       stage('install dependencies'){
-           steps{
-               sh 'npm ci'
-           }
-       }
-       stage('build react app'){
-           steps{
-               sh 'npm run build'
-           }
-       }
-       stage('build docker images'){
-           steps{
-               sh 'docker build -t vote-webapp:latest .'
-           }
-       }
-    }
-}
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                sh 'npm ci'
+            }
+        }
+
+        stage('Build React App') {
+            steps {
+                sh 'npm run build'
+            }
+        }
+
+        stage('Docker Build') {
+            steps {
+                sh 'docker build -t react-vite-app:latest .'
+            }
+        }
+      }
+   }
