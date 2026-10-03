@@ -9,15 +9,20 @@ pipeline {
             }
         }
 
-        stage('Install Dependencies') {
+        stage('versions') {
             steps {
                 sh 'node --version'
                 sh 'npm --version'
                 echo "Package files:"
-                sh 'ls -l package.json package-lock.json'
-                sh 'npm ci'
+               
             }
         }
+        stage('Install Dependencies'){
+{
+sh '''cd vote
+ ls -l package.json package-lock.json
+npm ci'''
+}
 
         stage('Build React App') {
             steps {
