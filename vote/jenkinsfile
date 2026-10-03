@@ -21,14 +21,5 @@ pipeline{
                sh 'docker build -t vote-webapp:latest .'
            }
        }
-    post {
-      success{
-        echo 'java application build successfully'
-        }
-      failure{
-       echo 'java application build failed'
-        }
-        }  
-
     }
 }
