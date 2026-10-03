@@ -3,13 +3,18 @@ pipeline {
 
     stages {
 
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
         stage('Install Dependencies') {
-            steps{
-              dir('vote'){
+            steps {
                 sh 'npm ci'
             }
         }
-       }
+
         stage('Build React App') {
             steps {
                 sh 'npm run build'
@@ -18,8 +23,32 @@ pipeline {
 
         stage('Docker Build') {
             steps {
-                sh 'docker build -t react-vite-app:latest .'
+                sh 'docker build -t vote-web:latest .'
             }
         }
-      }
-   }
+
+        stage('Run Docker Container') {
+            steps {
+                sh 'docker rm -f vote-web || true'
+                sh 'docker run -d --name vote-web -p 3000:80 vote-web:latest'
+            }
+        }
+
+        stage('Verify') {
+            steps {
+                sh 'docker ps'
+                sh 'docker images'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'React Vite CI/CD Pipeline Completed Successfully!'
+        }
+
+        failure {
+            echo 'Pipeline Failed. Check the Jenkins Console Output.'
+        }
+    }
+}
