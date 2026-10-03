@@ -10,12 +10,14 @@ pipeline {
         }
 
         stage('Install Dependencies') {
-            steps{
-                 dir('vote'){
+            steps {
+                sh 'node --version'
+                sh 'npm --version'
+                sh 'ls -la'
                 sh 'npm ci'
             }
         }
-       }
+
         stage('Build React App') {
             steps {
                 sh 'npm run build'
